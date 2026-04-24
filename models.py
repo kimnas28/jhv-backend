@@ -1,21 +1,21 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=6, max_length=128, description="Password between 6-128 characters")
     role: str # "jobseeker" or "employer"
 
 class AdminCreate(BaseModel):
     name: str
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=6, max_length=128, description="Password between 6-128 characters")
     admin_secret: str
 
 class UserLogin(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=6, max_length=128, description="Password between 6-128 characters")
 
 class Token(BaseModel):
     access_token: str
