@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from bson import ObjectId
 from datetime import datetime, timedelta  # <<< Added for Admin Graph tracking
 
@@ -20,12 +20,12 @@ from resume_analyzer import analyze_resume_complete
 
 class PasswordChange(BaseModel):
     email: EmailStr
-    current_password: str
-    new_password: str
+    current_password: str = Field(..., min_length=6, max_length=128, description="Current password")
+    new_password: str = Field(..., min_length=6, max_length=128, description="New password between 6-128 characters")
  
 class AccountDelete(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=6, max_length=128, description="Password for account deletion confirmation")
 
 class ProfileUpdate(BaseModel):
     email: EmailStr
